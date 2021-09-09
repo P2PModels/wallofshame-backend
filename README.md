@@ -25,4 +25,3 @@ The front-end of this repo is in [Wall of Shame frontend](https://github.com/P2P
 
 
 
-
