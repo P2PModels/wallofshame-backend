@@ -3,5 +3,5 @@ dist/
 src/generated/
 prisma/migrations/
 migration_lock.toml
-*.env*
+*.env
 *.db
