@@ -1,10 +1,10 @@
 import { ApolloServer } from 'apollo-server'
 import { schema } from './schema'
-import { context } from './context'
+import { createContext } from './context'
 
 const server = new ApolloServer({
   schema: schema,
-  context: context,
+  context: createContext,
 })
 
 server.listen().then(async ({ url }) => {

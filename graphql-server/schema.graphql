@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
 type Badge {
   area: String
   id: String!
@@ -29,15 +34,40 @@ scalar DateTime
 
 type Mutation {
   addBadge(data: BadgeCreateInput!): Badge!
+  login(email: String!, password: String!): AuthPayload
+  setAdmin(id: String!): User
+  signup(email: String!, name: String, password: String!): AuthPayload
 }
 
 type Query {
   allBadges: [Badge!]!
+  allUsers: [User!]!
   badgeById(id: String): Badge
   feed(orderBy: BadgeOrderByDate, skip: Int, take: Int): [Badge!]!
+  me: User
+  userById(id: String): User
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 enum SortOrder {
   asc
   desc
+}
+
+type User {
+  email: String!
+  id: String!
+  name: String
+  password: String
+  role: Role
+}
+
+input UserCreateInput {
+  email: String!
+  name: String
+  password: String!
 }

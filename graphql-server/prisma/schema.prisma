@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String?
+  role     Role    @default(USER)
+}
+
 model Badge {
   id            String    @id
   issuerName    String    @db.VarChar(200)
