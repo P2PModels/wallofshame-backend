@@ -18,6 +18,7 @@ import { v4 as uuid } from 'uuid';
 import { permissions } from './permissions'
 import { Context } from './context'
 import { APP_SECRET, getUserId } from './utils'
+import { ValidationError } from 'apollo-server-errors'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 
@@ -214,12 +215,17 @@ const Mutation = objectType({
             email,
           },
         })
+        console.log("Try to find user: ")
+        console.log(user)
+
         if (!user) {
-          throw new Error(`No user found for email: ${email}`)
+          console.log("About to throw email error")
+          return new ValidationError(`Invalid email`)
         }
         const passwordValid = await compare(password, user.password)
         if (!passwordValid) {
-          throw new Error('Invalid password')
+          console.log("About to throw password error")
+          return new ValidationError(`Invalid password`)
         }
         return {
           token: sign({ userId: user.id }, APP_SECRET),
