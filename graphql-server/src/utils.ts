@@ -17,3 +17,17 @@ export function getUserId(context: Context) {
     return verifiedToken && String(verifiedToken.userId) // Return userId if exists
   }
 }
+
+export async function isConnected(id: string | undefined, context: Context) {
+  const user = await context.prisma.user.findUnique({
+    where: { id: id },
+  })
+  return Boolean(user?.connected)
+}
+
+export async function isAdmin(id: string | undefined, context: Context) {
+  const user = await context.prisma.user.findUnique({
+    where: { id: id },
+  })
+  return Boolean(user?.role === 'ADMIN')
+}

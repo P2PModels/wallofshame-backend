@@ -13,7 +13,7 @@ import {
 } from 'nexus'
 import { applyMiddleware } from 'graphql-middleware'
 import { DateTimeResolver } from 'graphql-scalars'
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
 
 import { permissions } from './permissions'
 import { Context } from './context'
@@ -35,6 +35,7 @@ const User = objectType({
     t.string('name')
     t.string('password')
     t.field('role', { type: 'Role' })
+    t.boolean('connected')
   },
 })
 
@@ -202,7 +203,7 @@ const Mutation = objectType({
         }
       },
     })
-
+    
     t.field('login', {
       type: 'AuthPayload',
       args: {
@@ -210,13 +211,11 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, { email, password }, context: Context) => {
-        const user = await context.prisma.user.findUnique({
+        let user = await context.prisma.user.findUnique({
           where: {
             email,
           },
         })
-        console.log("Try to find user: ")
-        console.log(user)
 
         if (!user) {
           console.log("About to throw email error")
@@ -227,10 +226,27 @@ const Mutation = objectType({
           console.log("About to throw password error")
           return new ValidationError(`Invalid password`)
         }
+        user = await context.prisma.user.update({
+          where: { email },
+          data: { connected: true },
+        })
+        
         return {
           token: sign({ userId: user.id }, APP_SECRET),
           user,
         }
+      },
+    })
+
+    t.field('logout', {
+      type: 'User',
+      resolve: async (_parent, args, context: Context) => {
+        const userId = getUserId(context)
+        const user = await context.prisma.user.update({
+          where: { id: userId },
+          data: { connected: false },
+        })
+        return {connected: user.connected}
       },
     })
 
