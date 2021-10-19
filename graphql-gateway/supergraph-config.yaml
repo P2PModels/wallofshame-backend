@@ -1,0 +1,9 @@
+subgraphs:
+  users:
+    routing_url: https://rover.apollo.dev/quickstart/products/graphql
+    schema:
+      subgraph_url: https://rover.apollo.dev/quickstart/products/graphql
+  blockchian:
+    routing_url: https://rover.apollo.dev/quickstart/reviews/graphql
+    schema:
+      subgraph_url: https://rover.apollo.dev/quickstart/reviews/graphql
