@@ -28,3 +28,12 @@ model Badge {
   area          String?   @db.VarChar(50)
   issueDate     DateTime?
 }
+
+// model TransactionReceipt {
+//   to             String @db.VarChar(300)
+//   from           String @db.VarChar(300)
+//   contractAdress String @db.VarChar(300)
+
+// }
+
+// extend model Badge {}
