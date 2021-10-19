@@ -13,12 +13,16 @@ import {
 } from 'nexus'
 import { applyMiddleware } from 'graphql-middleware'
 import { DateTimeResolver } from 'graphql-scalars'
-// import { v4 as uuid } from 'uuid';
+import { ethers } from "ethers";
+import { v4 as uuid } from 'uuid';
 
 import { permissions } from './permissions'
 import { Context } from './context'
 import { APP_SECRET, getUserId } from './utils'
 import { ValidationError } from 'apollo-server-errors'
+import BadgeContract from './blockchain-service/abis/Badge.json' 
+
+require('dotenv').config();
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 
@@ -275,7 +279,7 @@ const Mutation = objectType({
     })
 
     // Badge mutations
-    // TODO: Review, flatten data object¿?, nativa PostgresQL uuid function?
+    // TODO: Review, flatten data object¿?
     t.nonNull.field('addBadge', {
       type: 'Badge',
       args: {
@@ -288,7 +292,61 @@ const Mutation = objectType({
       resolve: (_, args, context: Context) => {
         return context.prisma.badge.create({
           data: {
-            // id: uuid(),
+            issuerName: args.data.issuerName || '',
+            recipientName: args.data.recipientName || '',
+            area: args.data.area,
+            issueDate: args.data.issueDate || new Date(),
+          },
+        })
+      },
+    })
+
+    t.nonNull.field('issueBadge', {
+      type: 'Badge',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'BadgeCreateInput',
+          }),
+        ),
+      },
+      // TODO: Async or pass a promise to client ¿?
+      resolve: async (_, args, context: Context) => {
+        // TODO: Provide our Infura project url
+        const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
+        console.log(`<issuBadge> Provider: ${provider}`)
+        console.log(provider)
+
+
+        // TODO: Instance wallet and connect to provider
+        const signer = new ethers.Wallet(process.env.ORGANIZATION_PRIVATE_KEY, provider)
+        console.log(`<issuBadge> Wallet: ${signer}`)
+        console.log(signer)
+
+        // TODO: Import contract info
+        const badgeIssuerInstance = new ethers.Contract(
+            BadgeContract.address,
+            BadgeContract.abi,
+            signer
+        )
+        try {
+            const txResponse = await badgeIssuerInstance.issue(
+              args.data.issuerName,
+              // TODO: badge recipient address, remove for demand use case
+              '0x05eC46AeBA9Ed0bfC7318bA950977a22386A3fc2',
+              args.data.recipientName || 'P2PModels',
+            )
+            console.log(`<issuBadge> Tx sent, txResponse: ${txResponse}`)
+            console.log(txResponse)
+
+        } catch (e) {
+            console.log(`<issuBadge> Error sendig tx:`)
+            console.error(e)
+        }
+
+        return context.prisma.badge.create({
+          data: {
+            id: uuid(),
             issuerName: args.data.issuerName || '',
             recipientName: args.data.recipientName || '',
             area: args.data.area,

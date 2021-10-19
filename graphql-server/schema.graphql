@@ -34,6 +34,7 @@ scalar DateTime
 
 type Mutation {
   addBadge(data: BadgeCreateInput!): Badge!
+  issueBadge(data: BadgeCreateInput!): Badge!
   login(email: String!, password: String!): AuthPayload
   logout: User
   setAdmin(id: String!): User

@@ -22,6 +22,7 @@
     "apollo-server-errors": "^3.1.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
+    "ethers": "^5.4.7",
     "graphql": "15.5.1",
     "graphql-middleware": "^6.1.6",
     "graphql-scalars": "1.10.0",
