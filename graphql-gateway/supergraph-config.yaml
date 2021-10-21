@@ -1,0 +1,9 @@
+subgraphs:
+  users:
+    routing_url: http://localhost:3002/
+    schema:
+      subgraph_url: http://localhost:3002/
+  blockchian:
+    routing_url: http://localhost:3001/
+    schema:
+      subgraph_url: http://localhost:3001/
