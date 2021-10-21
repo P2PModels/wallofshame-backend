@@ -2,6 +2,7 @@
   "name": "typescript-graphql",
   "license": "MIT",
   "scripts": {
+    "init": "./src/scripts/init_backend.sh",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
     "start": "node dist/server",
     "clean": "rm -rf dist",

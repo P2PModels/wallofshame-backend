@@ -11,7 +11,6 @@ import {
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
 import { ethers } from "ethers";
-import { v4 as uuid } from 'uuid';
 
 import BadgeContract from './blockchain-service/abis/Badge.json' 
 
