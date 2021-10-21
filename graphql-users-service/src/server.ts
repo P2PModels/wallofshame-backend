@@ -7,7 +7,7 @@ const server = new ApolloServer({
   context: createContext,
 })
 
-const port = 3002
+const port = 4001
 
 server.listen(port).then(async ({ url }) => {
   console.log(`\

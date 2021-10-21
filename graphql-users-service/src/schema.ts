@@ -95,8 +95,6 @@ const Query = objectType({
       resolve: (parent, args, context: Context) => {
         // Check auth and get id
         const userId = getUserId(context)
-        console.log("Resolver called getUserId")
-        console.log(userId)
         return context.prisma.user.findUnique({
           where: {
             id: userId,
@@ -147,7 +145,6 @@ const Mutation = objectType({
             email,
           },
         })
-
         if (!user) {
           return new ValidationError(`Invalid email`)
         }
