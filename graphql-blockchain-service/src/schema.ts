@@ -11,6 +11,7 @@ import {
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
 import { ethers } from "ethers";
+import { ExternallyOwnedAccount } from "@ethersproject/abstract-signer";
 
 import BadgeContract from './blockchain-service/abis/Badge.json' 
 
@@ -123,15 +124,15 @@ const Query = objectType({
       args: {
         skip: intArg(),
         take: intArg(),
-        orderBy: arg({
-          type: 'BadgeOrderByDate',
-        }),
+        // orderBy: arg({
+        //   type: 'BadgeOrderByDate',
+        // }),
       },
       resolve: (_parent, args, context) => {
         return context.prisma.badge.findMany({
-          take: args.take || undefined,
-          skip: args.skip || undefined,
-          orderBy: args.orderBy,
+          take: args.take || 10,
+          skip: args.skip || 0,
+          // orderBy: args.orderBy,
         })
       },
     })
@@ -175,6 +176,8 @@ const Mutation = objectType({
       },
       // TODO: Async or pass a promise to client ¿?
       resolve: async (_, args, context) => {
+        // console.log(`<issuBadge> Issuing badge`)
+
         // TODO: Provide our Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
         // console.log(`<issuBadge> Provider: ${provider}`)
@@ -182,7 +185,11 @@ const Mutation = objectType({
 
 
         // TODO: Create wallet and connect to provider
-        const signer = new ethers.Wallet(process.env.ORGANIZATION_PRIVATE_KEY, provider)
+        const eoa: ExternallyOwnedAccount = { 
+          address: '0xb4124cEB3451635DAcedd11767f004d8a28c6eE7',
+          privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
+        }
+        const signer = new ethers.Wallet(eoa, provider)
         // console.log(`<issuBadge> Wallet: ${signer}`)
         // console.log(signer)
 
@@ -204,8 +211,8 @@ const Mutation = objectType({
             // console.log(`<issuBadge> Tx sent, txResponse: ${txResponse}`)
             // console.log(txResponse)
             receipt = await txResponse.wait()
-            console.log(`<issuBadge> Tx receipt`)
-            console.log(receipt)
+            // console.log(`<issuBadge> Tx receipt`)
+            // console.log(receipt)
 
         } catch (e) {
             console.log(`<issuBadge> Error sendig tx:`)

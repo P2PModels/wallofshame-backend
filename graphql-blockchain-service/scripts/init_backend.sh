@@ -8,4 +8,4 @@ npx prisma db push --force-reset
 npx prisma db seed --preview-feature
 
 # Run development environment
-npm run dev
+# npm run dev

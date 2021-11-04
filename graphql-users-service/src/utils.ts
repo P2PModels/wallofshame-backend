@@ -1,9 +1,9 @@
-import { verify } from 'jsonwebtoken'
+import { Secret, verify } from 'jsonwebtoken'
 import { Context } from './context'
 
 require('dotenv').config();
 
-export const APP_SECRET = process.env.APP_SECRET
+export const APP_SECRET:Secret = process.env.APP_SECRET || ''
 
 interface Token {
   userId: string

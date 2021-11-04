@@ -1,13 +1,11 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import {
-  intArg,
   makeSchema,
   nonNull,
   objectType,
   stringArg,
   inputObjectType,
-  arg,
   asNexusMethod,
   enumType,
 } from 'nexus'
@@ -52,6 +50,13 @@ const AuthPayload = objectType({
   definition(t) {
     t.string('token')
     t.field('user', { type: 'User' })
+  },
+})
+
+const Connection = objectType({
+  name: 'Connection',
+  definition(t) {
+    t.boolean('connected')
   },
 })
 
@@ -146,11 +151,11 @@ const Mutation = objectType({
           },
         })
         if (!user) {
-          return new ValidationError(`Invalid email`)
+          throw new ValidationError(`Invalid email`)
         }
-        const passwordValid = await compare(password, user.password)
+        const passwordValid = await compare(password, user.password || '')
         if (!passwordValid) {
-          return new ValidationError(`Invalid password`)
+          throw new ValidationError(`Invalid password`)
         }
         user = await context.prisma.user.update({
           where: { email },
@@ -164,14 +169,14 @@ const Mutation = objectType({
     })
 
     t.field('logout', {
-      type: 'User',
+      type: 'Connection',
       resolve: async (_parent, args, context: Context) => {
         const userId = getUserId(context)
         const user = await context.prisma.user.update({
           where: { id: userId },
           data: { connected: false },
         })
-        return {connected: user.connected}
+        return { connected: user.connected }
       },
     })
 
@@ -209,6 +214,7 @@ const schemaWithoutPermissions = makeSchema({
     User,
     UserCreateInput,
     AuthPayload,
+    Connection,
     Query,
     Mutation,
   ],

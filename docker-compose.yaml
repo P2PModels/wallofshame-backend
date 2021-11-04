@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:13.4
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+    networks:
+      main:
+        aliases:
+          - database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+
+  blockchain_service:
+    depends_on:
+      - db
+    build: ./graphql-blockchain-service
+    image: blockchain_service:latest
+    volumes:
+      - ./graphql-blockchain-service/init_flag:/app/init_flag
+    networks:
+      main:
+        aliases:
+          - blockchain
+    environment:
+      DATABASE_URL: "postgresql://admin:secret@database:5432/blockchain"
+
+  users_service:
+    depends_on:
+      - db
+    build: ./graphql-users-service
+    image: users_service:latest
+    volumes:
+      - ./graphql-users-service/init_flag:/app/init_flag
+    networks:
+      main:
+        aliases:
+          - users
+    environment:
+      DATABASE_URL: "postgresql://admin:secret@database:5432/users"
+
+  api_gateway:
+    depends_on:
+      - users_service
+      - blockchain_service
+    build: ./graphql-gateway
+    image: api_gateway:latest
+    ports:
+      - 4000:4000
+    networks:
+      main:
+        aliases:
+          - api
+    environment:
+      USERS_API_ENDPOINT: "users:4001"
+      BLOCKCHAIN_API_ENDPOINT: "blockchain:4002"
+
+networks:
+  main:
