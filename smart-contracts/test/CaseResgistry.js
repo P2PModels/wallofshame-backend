@@ -67,7 +67,17 @@ describe("CaseRegistry contract", function () {
         )
       )
         .to.emit(caseRegistryInstance, "CaseReported")
-        .withArgs(caseToReport.id);
+        .withArgs(
+          caseToReport.id,
+          caseToReport.companyName,
+          caseToReport.caseType,
+          caseToReport.description,
+          caseToReport.region,
+          caseToReport.profession,
+          caseToReport.gender,
+          caseToReport.ageRange,
+          caseToReport.experience
+        );
     });
 
     it("Should return the reported case", async function () {
