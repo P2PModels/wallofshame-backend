@@ -96,15 +96,15 @@ describe("CaseRegistry contract", function () {
         caseToReport.id
       );
 
-      expect(reportedCase.id).to.equal(caseToReport.id);
-      expect(reportedCase.companyName).to.equal(caseToReport.companyName);
-      expect(reportedCase.caseType).to.equal(caseToReport.caseType);
-      expect(reportedCase.description).to.equal(caseToReport.description);
-      expect(reportedCase.region).to.equal(caseToReport.region);
-      expect(reportedCase.profession).to.equal(caseToReport.profession);
-      expect(reportedCase.gender).to.equal(caseToReport.gender);
-      expect(reportedCase.ageRange).to.equal(caseToReport.ageRange);
-      expect(reportedCase.experience).to.equal(caseToReport.experience);
+      expect(reportedCase["id"]).to.equal(caseToReport.id);
+      expect(reportedCase["companyName"]).to.equal(caseToReport.companyName);
+      expect(reportedCase["caseType"]).to.equal(caseToReport.caseType);
+      expect(reportedCase["description"]).to.equal(caseToReport.description);
+      expect(reportedCase["region"]).to.equal(caseToReport.region);
+      expect(reportedCase["profession"]).to.equal(caseToReport.profession);
+      expect(reportedCase["gender"]).to.equal(caseToReport.gender);
+      expect(reportedCase["ageRange"]).to.equal(caseToReport.ageRange);
+      expect(reportedCase["experience"]).to.equal(caseToReport.experience);
     });
   });
 });
