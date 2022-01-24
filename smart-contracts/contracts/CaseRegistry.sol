@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
+// import "hardhat/console.sol";
 
 contract CaseRegistry {
     address public owner = msg.sender;
@@ -20,14 +20,14 @@ contract CaseRegistry {
     mapping(uint256 => Case) public casesById;
     event CaseReported(
         uint256 id,
-        string _companyName,
-        string _caseType,
-        string _description,
-        string _region,
-        string _profession,
-        string _gender,
-        string _ageRange,
-        string _experience
+        string companyName,
+        string caseType,
+        string description,
+        string region,
+        string profession,
+        string gender,
+        string ageRange,
+        string experience
     );
 
     function report(
