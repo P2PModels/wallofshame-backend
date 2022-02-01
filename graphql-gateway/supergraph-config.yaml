@@ -7,3 +7,7 @@ subgraphs:
     routing_url: http://localhost:3001/
     schema:
       subgraph_url: http://localhost:3001/
+  subgraph:
+    routing_url: https://api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.1
+    schema:
+      subgraph_url: https://api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.1

@@ -15,6 +15,10 @@ module.exports = function makeRemoteExecutor(url) {
         },
         body: JSON.stringify({ query, variables }),
       });
+
+      console.log("Fetch result");
+      console.log(fetchResult);
+      
     } catch (e) {
       console.log(e);
     }

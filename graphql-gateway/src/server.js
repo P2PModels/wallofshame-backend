@@ -10,36 +10,46 @@ const waitOn = require("wait-on");
 require("dotenv").config();
 
 async function makeGatewaySchema() {
-  const usersRemoteExecutor = makeRemoteExecutor(
-    `http://${process.env.USERS_API_ENDPOINT}/`
-  );
-  const blockchainRemoteExecutor = makeRemoteExecutor(
-    `http://${process.env.BLOCKCHAIN_API_ENDPOINT}/`
+  // const usersRemoteExecutor = makeRemoteExecutor(
+  //   `http://${process.env.USERS_API_ENDPOINT}/`
+  // );
+  // const blockchainRemoteExecutor = makeRemoteExecutor(
+  //   `http://${process.env.BLOCKCHAIN_API_ENDPOINT}/`
+  // );
+  const subgraphRemoteExecutor = makeRemoteExecutor(
+    `${process.env.SUBGRAPH_API_ENDPOINT}`
   );
   const adminContext = { authHeader: "Commons my-app-to-app-token" };
 
   return stitchSchemas({
     subschemas: [
+      // {
+      //   schema: await introspectSchema(usersRemoteExecutor, adminContext),
+      //   executor: usersRemoteExecutor,
+      // },
+      // {
+      //   schema: await introspectSchema(blockchainRemoteExecutor, adminContext),
+      //   executor: blockchainRemoteExecutor,
+      // },
       {
-        schema: await introspectSchema(usersRemoteExecutor, adminContext),
-        executor: usersRemoteExecutor,
-      },
-      {
-        schema: await introspectSchema(blockchainRemoteExecutor, adminContext),
-        executor: blockchainRemoteExecutor,
+        schema: await introspectSchema(subgraphRemoteExecutor, adminContext),
+        executor: subgraphRemoteExecutor,
       },
     ],
   });
 }
 
-waitOn({
-  resources: [
-    `tcp:${process.env.USERS_API_ENDPOINT}`,
-    `tcp:${process.env.BLOCKCHAIN_API_ENDPOINT}`,
-  ],
-  log: true,
-})
-  .then(() => {
+// waitOn({
+//   resources: [
+    // `tcp:${process.env.USERS_API_ENDPOINT}`,
+    // `tcp:${process.env.BLOCKCHAIN_API_ENDPOINT}`,
+
+    // The subgraph endpoint returns a 404 when a GET request 
+    // is done, therefore it can't be monitored with this library
+  // ],
+//   log: true,
+// })
+//   .then(() => {
     makeGatewaySchema().then((schema) => {
       const server = new ApolloServer({
         schema: schema,
@@ -58,8 +68,7 @@ waitOn({
         console.log(`🚀 Server ready at ${url}`);
       });
     });
-  })
-  .catch((e) => {
-    console.log("Wait on error");
-    console.log(e);
-  });
+  // })
+  // .catch((e) => {
+  //   console.log("Wait on error");
+  // });
