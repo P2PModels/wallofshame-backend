@@ -1,0 +1,11 @@
+type Case @entity {
+  id: ID!
+  companyName: String!
+  caseType: String!
+  description: String!
+  region: String!
+  profession: String!
+  gender: String!
+  ageRange: String!
+  experience: String!
+}

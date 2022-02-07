@@ -1,0 +1,24 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: CaseRegistry
+    network: rinkeby
+    source:
+      address: "0xeF8fe7aaB291372B3A384C16a4277D9f7c98c028"
+      abi: CaseRegistry
+      startBlock: 10047194
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Case
+      abis:
+        - name: CaseRegistry
+          file: ./abis/CaseRegistry.json
+      eventHandlers:
+        - event: CaseReported(uint256,string,string,string,string,string,string,string,string)
+          handler: handleCaseReported
+      file: ./src/mapping.ts
