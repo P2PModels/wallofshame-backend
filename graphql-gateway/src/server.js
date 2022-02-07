@@ -13,13 +13,13 @@ async function makeGatewaySchema() {
   // const usersRemoteExecutor = makeRemoteExecutor(
   //   `http://${process.env.USERS_API_ENDPOINT}/`
   // );
-  // const blockchainRemoteExecutor = makeRemoteExecutor(
-  //   `http://${process.env.BLOCKCHAIN_API_ENDPOINT}/`
-  // );
-  const subgraphRemoteExecutor = makeRemoteExecutor(
-    `${process.env.SUBGRAPH_API_ENDPOINT}`
+  const reportRemoteExecutor = makeRemoteExecutor(
+    `http://${process.env.REPORT_API_ENDPOINT}/`
   );
-  const adminContext = { authHeader: "Commons my-app-to-app-token" };
+  const casesRemoteExecutor = makeRemoteExecutor(
+    `https://${process.env.CASES_API_ENDPOINT}`
+  );
+  // const adminContext = { authHeader: "Commons my-app-to-app-token" };
 
   return stitchSchemas({
     subschemas: [
@@ -27,37 +27,39 @@ async function makeGatewaySchema() {
       //   schema: await introspectSchema(usersRemoteExecutor, adminContext),
       //   executor: usersRemoteExecutor,
       // },
-      // {
-      //   schema: await introspectSchema(blockchainRemoteExecutor, adminContext),
-      //   executor: blockchainRemoteExecutor,
-      // },
       {
-        schema: await introspectSchema(subgraphRemoteExecutor, adminContext),
-        executor: subgraphRemoteExecutor,
+        // schema: await introspectSchema(reportRemoteExecutor, adminContext),
+        schema: await introspectSchema(reportRemoteExecutor),
+        executor: reportRemoteExecutor,
+      },
+      {
+        // schema: await introspectSchema(casesRemoteExecutor, adminContext),
+        schema: await introspectSchema(casesRemoteExecutor),
+        executor: casesRemoteExecutor,
       },
     ],
   });
 }
 
-// waitOn({
-//   resources: [
+waitOn({
+  resources: [
     // `tcp:${process.env.USERS_API_ENDPOINT}`,
-    // `tcp:${process.env.BLOCKCHAIN_API_ENDPOINT}`,
+    `tcp:4002`,
 
     // The subgraph endpoint returns a 404 when a GET request 
     // is done, therefore it can't be monitored with this library
-  // ],
-//   log: true,
-// })
-//   .then(() => {
+  ],
+  log: true,
+})
+  .then(() => {
     makeGatewaySchema().then((schema) => {
       const server = new ApolloServer({
         schema: schema,
-        context: (query) => {
-          return {
-            authHeader: query.req.headers.authorization || "",
-          };
-        },
+        // context: (query) => {
+        //   return {
+        //     authHeader: query.req.headers.authorization || "",
+        //   };
+        // },
         // Add this to change landing page, necesary for this version of ApolloServer
         plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
       });
@@ -65,10 +67,10 @@ async function makeGatewaySchema() {
       const port = 4000;
 
       server.listen(port).then(({ url }) => {
-        console.log(`🚀 Server ready at ${url}`);
+        console.log(`🚀 API Gateway ready at ${url}`);
       });
     });
-  // })
-  // .catch((e) => {
-  //   console.log("Wait on error");
-  // });
+  })
+  .catch((e) => {
+    console.log("Wait on error");
+  });
