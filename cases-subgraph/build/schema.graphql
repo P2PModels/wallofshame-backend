@@ -1,3 +1,5 @@
+# TODO: use Enums
+
 type Case @entity {
   id: ID!
   companyName: String!
@@ -8,4 +10,14 @@ type Case @entity {
   gender: String!
   ageRange: String!
   experience: String!
+}
+
+type Stat @entity {
+  id: ID!
+  regionName: String!
+  casesByRegion: Int!
+  casesByType: [Int!]
+  casesByProfession: [Int!]
+  casesByGender: [Int!]
+  casesByAgeRange: [Int!]
 }
