@@ -27,8 +27,8 @@ const Case = objectType({
   },
 })
 
-const ReportCaseCreateInput = inputObjectType({
-  name: 'ReportCaseCreateInput',
+const ReportCaseInput = inputObjectType({
+  name: 'ReportCaseInput',
   definition(t) {
     t.string('companyName'),
     t.string('caseType'),
@@ -49,19 +49,18 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: 'ReportCaseCreateInput',
+            type: 'ReportCaseInput',
           }),
         ),
       },
       resolve: async (_, args, context) => {
         
-        console.log(`<report> Reporting case`)
+        // console.log(`<report> Reporting case`)
 
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
-        console.log(`<report> Provider`)
-        console.log(provider)
-
+        // console.log(`<report> Provider`)
+        // console.log(provider)
 
         // Provide wallet data and connect to provider
         const eoa: ExternallyOwnedAccount = { 
@@ -69,8 +68,8 @@ const Mutation = objectType({
           privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
         }
         const signer = new ethers.Wallet(eoa, provider)
-        console.log(`<report> Wallet: ${signer}`)
-        console.log(signer)
+        // console.log(`<report> Wallet: ${signer}`)
+        // console.log(signer)
 
         // Import contract info
         const caseRegistryInstance = new ethers.Contract(
@@ -91,19 +90,32 @@ const Mutation = objectType({
               args.data.ageRange,
               args.data.experience
             )
-            console.log(`<report> Tx sent, txResponse: ${txResponse}`)
+            // console.log(`<report> Tx sent, txResponse: ${txResponse}`)
             // console.log(txResponse)
             receipt = await txResponse.wait()
-            console.log(`<report> Tx receipt:`)
-            console.log(receipt)
+            // console.log(`<report> Tx receipt:`)
+            // console.log(receipt)
 
         } catch (e) {
             console.log(`<report> Error sendig tx:`)
             console.error(e)
         }
 
-        return context.prisma.case.create({
-          data: {
+        // let result = context.prisma.case.create({
+        //   data: {
+        //     companyName:  args.data.companyName,
+        //     caseType:  args.data.caseType,
+        //     description:  args.data.description,
+        //     region:  args.data.region,
+        //     profession:  args.data.profession,
+        //     gender:  args.data.gender,
+        //     ageRange:  args.data.ageRange,
+        //     experience:  args.data.experience
+        //   },
+        // })
+        // console.log(result)
+        return ({
+            id: "0",
             companyName:  args.data.companyName,
             caseType:  args.data.caseType,
             description:  args.data.description,
@@ -111,8 +123,7 @@ const Mutation = objectType({
             profession:  args.data.profession,
             gender:  args.data.gender,
             ageRange:  args.data.ageRange,
-            experience:  args.data.experience
-          },
+            experience:  args.data.experience 
         })
       },
     })
@@ -122,7 +133,7 @@ const Mutation = objectType({
 export const schema = makeSchema({
   types: [
     Case,
-    ReportCaseCreateInput,
+    ReportCaseInput,
     Mutation,
   ],
   outputs: {
