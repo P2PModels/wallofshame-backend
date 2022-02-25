@@ -102,18 +102,17 @@ const Mutation = objectType({
             console.error(e)
         }
 
-        return context.prisma.case.create({
-          data: {
-            companyName:  args.data.companyName,
-            caseType:  args.data.caseType,
-            description:  args.data.description,
-            region:  args.data.region,
-            profession:  args.data.profession,
-            gender:  args.data.gender,
-            ageRange:  args.data.ageRange,
-            experience:  args.data.experience
-          },
-        })
+        return ({
+          id: "0",
+          companyName:  args.data.companyName,
+          caseType:  args.data.caseType,
+          description:  args.data.description,
+          region:  args.data.region,
+          profession:  args.data.profession,
+          gender:  args.data.gender,
+          ageRange:  args.data.ageRange,
+          experience:  args.data.experience 
+      })
       },
     })
   },
