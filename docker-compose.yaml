@@ -4,8 +4,6 @@ services:
   cases_service:
     build: ./graphql-cases-service
     image: cases_service:latest
-    # ports:
-    #   - 443:443
     networks:
       main:
         aliases:
@@ -18,7 +16,6 @@ services:
     image: api_gateway:latest
     ports:
       - 4000:4000
-      - 443:443
     networks:
       main:
         aliases:
