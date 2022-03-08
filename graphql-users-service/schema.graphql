@@ -7,7 +7,7 @@ type Mutation {
 }
 
 type Query {
-  users(filter: UserWhereInput): [User!]!
+  users(filter: String): [User!]!
 }
 
 type User {

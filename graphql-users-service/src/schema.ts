@@ -43,17 +43,16 @@ const UserWhereInput = inputObjectType({
 const Query = objectType({
   name: 'Query',
   definition(t) {
-
     t.nonNull.list.nonNull.field('users', {
       type: 'User',
       args: {
         filter: arg({
-          type: 'UserWhereInput',
+          type: 'String',
         }),
       },
       resolve: (_parent, args, context) => {
         return context.prisma.user.findMany({
-          where: args.filter ? args.filter : undefined
+          where: args.filter ? JSON.parse(args.filter) : undefined
         })
       },
     })
