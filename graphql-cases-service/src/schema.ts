@@ -54,7 +54,7 @@ const Mutation = objectType({
         ),
       },
       resolve: async (_, args, context) => {
-        
+
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
     
@@ -102,6 +102,7 @@ const Mutation = objectType({
         //   },
         // })
         // console.log(result)
+
         return ({
             id: "0",
             companyName:  args.data.companyName,
