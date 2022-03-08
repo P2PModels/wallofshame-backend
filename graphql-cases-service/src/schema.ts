@@ -27,6 +27,7 @@ const Case = objectType({
   },
 })
 
+
 const ReportCaseCreateInput = inputObjectType({
   name: 'ReportCaseCreateInput',
   definition(t) {
@@ -55,13 +56,12 @@ const Mutation = objectType({
       },
       resolve: async (_, args, context) => {
         
-        console.log(`<report> Reporting case`)
+        // console.log(`<report> Reporting case`)
 
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
-        console.log(`<report> Provider`)
-        console.log(provider)
-
+        // console.log(`<report> Provider`)
+        // console.log(provider)
 
         // Provide wallet data and connect to provider
         const eoa: ExternallyOwnedAccount = { 
@@ -69,8 +69,8 @@ const Mutation = objectType({
           privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
         }
         const signer = new ethers.Wallet(eoa, provider)
-        console.log(`<report> Wallet: ${signer}`)
-        console.log(signer)
+        // console.log(`<report> Wallet: ${signer}`)
+        // console.log(signer)
 
         // Import contract info
         const caseRegistryInstance = new ethers.Contract(
@@ -91,28 +91,41 @@ const Mutation = objectType({
               args.data.ageRange,
               args.data.experience
             )
-            console.log(`<report> Tx sent, txResponse: ${txResponse}`)
+            // console.log(`<report> Tx sent, txResponse: ${txResponse}`)
             // console.log(txResponse)
             receipt = await txResponse.wait()
-            console.log(`<report> Tx receipt:`)
-            console.log(receipt)
+            // console.log(`<report> Tx receipt:`)
+            // console.log(receipt)
 
         } catch (e) {
             console.log(`<report> Error sendig tx:`)
             console.error(e)
         }
 
+        // let result = context.prisma.case.create({
+        //   data: {
+        //     companyName:  args.data.companyName,
+        //     caseType:  args.data.caseType,
+        //     description:  args.data.description,
+        //     region:  args.data.region,
+        //     profession:  args.data.profession,
+        //     gender:  args.data.gender,
+        //     ageRange:  args.data.ageRange,
+        //     experience:  args.data.experience
+        //   },
+        // })
+        // console.log(result)
         return ({
-          id: "0",
-          companyName:  args.data.companyName,
-          caseType:  args.data.caseType,
-          description:  args.data.description,
-          region:  args.data.region,
-          profession:  args.data.profession,
-          gender:  args.data.gender,
-          ageRange:  args.data.ageRange,
-          experience:  args.data.experience 
-      })
+            id: "0",
+            companyName:  args.data.companyName,
+            caseType:  args.data.caseType,
+            description:  args.data.description,
+            region:  args.data.region,
+            profession:  args.data.profession,
+            gender:  args.data.gender,
+            ageRange:  args.data.ageRange,
+            experience:  args.data.experience 
+        })
       },
     })
   },
