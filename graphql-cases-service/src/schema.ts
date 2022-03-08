@@ -27,8 +27,9 @@ const Case = objectType({
   },
 })
 
-const ReportCaseInput = inputObjectType({
-  name: 'ReportCaseInput',
+
+const ReportCaseCreateInput = inputObjectType({
+  name: 'ReportCaseCreateInput',
   definition(t) {
     t.string('companyName'),
     t.string('caseType'),
@@ -49,7 +50,7 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: 'ReportCaseInput',
+            type: 'ReportCaseCreateInput',
           }),
         ),
       },
@@ -133,7 +134,7 @@ const Mutation = objectType({
 export const schema = makeSchema({
   types: [
     Case,
-    ReportCaseInput,
+    ReportCaseCreateInput,
     Mutation,
   ],
   outputs: {
