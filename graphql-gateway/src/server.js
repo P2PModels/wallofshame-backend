@@ -10,9 +10,9 @@ const waitOn = require("wait-on");
 require("dotenv").config();
 
 async function makeGatewaySchema() {
-  // const usersRemoteExecutor = makeRemoteExecutor(
-  //   `http://${process.env.USERS_API_ENDPOINT}/`
-  // );
+  const usersRemoteExecutor = makeRemoteExecutor(
+    `http://${process.env.USERS_API_ENDPOINT}/`
+  );
   const reportRemoteExecutor = makeRemoteExecutor(
     `http://${process.env.CASES_BACKEND_API_ENDPOINT}/`
   );
@@ -23,10 +23,11 @@ async function makeGatewaySchema() {
 
   return stitchSchemas({
     subschemas: [
-      // {
-      //   schema: await introspectSchema(usersRemoteExecutor, adminContext),
-      //   executor: usersRemoteExecutor,
-      // },
+      {
+        // schema: await introspectSchema(usersRemoteExecutor, adminContext),
+        schema: await introspectSchema(usersRemoteExecutor),
+        executor: usersRemoteExecutor,
+      },
       {
         // schema: await introspectSchema(reportRemoteExecutor, adminContext),
         schema: await introspectSchema(reportRemoteExecutor),
@@ -44,6 +45,8 @@ async function makeGatewaySchema() {
 waitOn({
   resources: [
     // `tcp:${process.env.USERS_API_ENDPOINT}`,
+    `tcp:4001`,
+    
     //`tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
     `tcp:4002`,
 
