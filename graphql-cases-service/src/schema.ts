@@ -27,7 +27,6 @@ const Case = objectType({
   },
 })
 
-
 const ReportCaseCreateInput = inputObjectType({
   name: 'ReportCaseCreateInput',
   definition(t) {
@@ -56,21 +55,15 @@ const Mutation = objectType({
       },
       resolve: async (_, args, context) => {
         
-        // console.log(`<report> Reporting case`)
-
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
-        // console.log(`<report> Provider`)
-        // console.log(provider)
-
+    
         // Provide wallet data and connect to provider
         const eoa: ExternallyOwnedAccount = { 
           address: '0xb4124cEB3451635DAcedd11767f004d8a28c6eE7',
           privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
         }
         const signer = new ethers.Wallet(eoa, provider)
-        // console.log(`<report> Wallet: ${signer}`)
-        // console.log(signer)
 
         // Import contract info
         const caseRegistryInstance = new ethers.Contract(
@@ -91,14 +84,8 @@ const Mutation = objectType({
               args.data.ageRange,
               args.data.experience
             )
-            // console.log(`<report> Tx sent, txResponse: ${txResponse}`)
-            // console.log(txResponse)
             receipt = await txResponse.wait()
-            // console.log(`<report> Tx receipt:`)
-            // console.log(receipt)
-
         } catch (e) {
-            console.log(`<report> Error sendig tx:`)
             console.error(e)
         }
 
