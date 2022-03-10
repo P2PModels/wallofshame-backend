@@ -1,6 +1,34 @@
 version: "3.7"
 
 services:
+  db:
+    image: postgres:13.4
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+    networks:
+      main:
+        aliases:
+          - database
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+
+  users_service:
+    depends_on:
+      - db
+    build: ./graphql-users-service
+    image: users_service:latest
+    volumes:
+      - ./graphql-users-service/init_flag:/app/init_flag
+    networks:
+      main:
+        aliases:
+          - users
+    environment:
+      DB_URL: "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@database:$POSTGRES_PORT/$POSTGRES_DB"
+      PORT: $USERS_SERVICE_PORT
+
   cases_service:
     build: ./graphql-cases-service
     image: cases_service:latest
@@ -8,9 +36,12 @@ services:
       main:
         aliases:
           - cases
+    environment:
+      PORT: $CASES_BACKEND_SERVICE_PORT
 
   api_gateway:
     depends_on:
+      - users_service
       - cases_service
     build: ./graphql-gateway
     image: api_gateway:latest
@@ -21,8 +52,9 @@ services:
         aliases:
           - gateway
     environment:
-      CASES_BACKEND_API_ENDPOINT: "cases:4002"
-      CASES_SUBGRAPH_API_ENDPOINT: "api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.30"
+      USERS_API_ENDPOINT: "users:$USERS_SERVICE_PORT"
+      CASES_BACKEND_API_ENDPOINT: "cases:$CASES_BACKEND_SERVICE_PORT"
+      CASES_SUBGRAPH_API_ENDPOINT: "$CASES_SUBGRAPH_ENDPOINT"
 
 networks:
   main:
