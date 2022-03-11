@@ -44,11 +44,11 @@ async function makeGatewaySchema() {
 
 waitOn({
   resources: [
-    // `tcp:${process.env.USERS_API_ENDPOINT}`,
-    `tcp:4001`,
+    `tcp:${process.env.USERS_API_ENDPOINT}`,
+    //`tcp:4001`,
     
-    //`tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
-    `tcp:4002`,
+    `tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
+    //`tcp:4002`,
 
     // The subgraph endpoint returns a 404 when a GET request 
     // is done, therefore it can't be monitored with this library
