@@ -20,19 +20,19 @@ async function main() {
   console.log(`Start seeding ...`)
 
   for (const c of reportCaseData) {
-    const caseToReport = await prisma.case.create({
-      data: {
-        companyName: c.companyName,
-        caseType: c.caseType,  
-        description: c.description,   
-        region: c.region,        
-        profession: c.profession,  
-        gender: c.gender,   
-        ageRange: c.ageRange,    
-        experience: c.experience, 
-      }
-    })
-    console.log(`Created case with id: ${caseToReport.id}`)
+    // const caseToReport = await prisma.case.create({
+    //   data: {
+    //     companyName: c.companyName,
+    //     caseType: c.caseType,  
+    //     description: c.description,   
+    //     region: c.region,        
+    //     profession: c.profession,  
+    //     gender: c.gender,   
+    //     ageRange: c.ageRange,    
+    //     experience: c.experience, 
+    //   }
+    // })
+    // console.log(`Created case with id: ${caseToReport.id}`)
   }
   console.log(`Seeding finished.`)
 }

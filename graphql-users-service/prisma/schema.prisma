@@ -4,19 +4,23 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
+// enum Role {
+//   USER
+//   ADMIN
+// }
 
 model User {
   id        String  @id @default(uuid())
   email     String  @unique
-  name      String?
-  password  String?
-  role      Role    @default(USER)
-  connected Boolean @default(false)
+  terms    Boolean 
+  region    String
+  profession String
+  gender    String
+  // name      String?
+  // password  String?
+  // role      Role    @default(USER)
+  // connected Boolean @default(false)
 }

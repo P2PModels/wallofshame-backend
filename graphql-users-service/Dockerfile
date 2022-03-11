@@ -6,9 +6,8 @@ COPY . .
 RUN npm install --production
 RUN npm run build
 
-EXPOSE 4001
+EXPOSE $PORT
 
-# CMD ["node", "dist/server"]
 CMD ["/bin/sh", "./scripts/init_container.sh"]
 
 
