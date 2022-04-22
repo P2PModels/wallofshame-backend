@@ -2,6 +2,7 @@ const { expect } = require("chai");
 
 describe("CaseRegistry contract", function () {
   let owner;
+  let not_owner;
 
   let companyName = "Endesa";
   let caseType = "Maltrato";
@@ -21,6 +22,7 @@ describe("CaseRegistry contract", function () {
     // Save account addresses once to use in each test
     const accounts = await ethers.getSigners();
     owner = accounts[0];
+    not_owner = accounts[1];
 
     // Badge info to use
     caseToReport = {
@@ -107,4 +109,16 @@ describe("CaseRegistry contract", function () {
       expect(reportedCase["experience"]).to.equal(caseToReport.experience);
     });
   });
+
+  describe("Restart", function () {
+    it("Should only allow the owner to execute the function", async function () {
+      caseRegistryInstance = await caseRegistryDeploy.connect(not_owner);
+      expect(caseRegistryInstance.restart())
+      .to.be.revertedWith('USER_IS_NOT_OWNER');
+    });
+    it("Should emit event", async function () {
+      expect(caseRegistryInstance.restart())
+      .to.emit(caseRegistryInstance, "CaseResgistryRestarted")
+    });
+  })
 });
