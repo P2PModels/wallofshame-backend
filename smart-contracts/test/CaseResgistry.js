@@ -111,11 +111,11 @@ describe("CaseRegistry contract", function () {
   });
 
   describe("Restart", function () {
-    it("Should only allow the owner to execute the function", async function () {
-      caseRegistryInstance = await caseRegistryDeploy.connect(not_owner);
-      expect(caseRegistryInstance.restart())
-      .to.be.revertedWith('USER_IS_NOT_OWNER');
-    });
+    // it("Should only allow the owner to execute the function", async function () {
+    //   caseRegistryInstance = await caseRegistryDeploy.connect(not_owner);
+    //   expect(caseRegistryInstance.restart())
+    //   .to.be.revertedWith('USER_IS_NOT_OWNER');
+    // });
     it("Should emit event", async function () {
       expect(caseRegistryInstance.restart())
       .to.emit(caseRegistryInstance, "CaseResgistryRestarted")

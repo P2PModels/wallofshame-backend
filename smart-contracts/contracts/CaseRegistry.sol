@@ -32,13 +32,13 @@ contract CaseRegistry {
 
     event CaseRegistryRestarted();
 
-    // Errors
-    string private constant ERROR_NOT_OWNER = "USER_IS_NOT_OWNER";
+    // // Errors
+    // string private constant ERROR_NOT_OWNER = "USER_IS_NOT_OWNER";
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, ERROR_NOT_OWNER);
-        _;
-    }
+    // modifier onlyOwner() {
+    //     require(msg.sender == owner, ERROR_NOT_OWNER);
+    //     _;
+    // }
 
     function report(
         string memory _companyName,
@@ -77,7 +77,8 @@ contract CaseRegistry {
         currentId++;
     }
 
-    function restart() onlyOwner public {
+    function restart() public {
+    // function restart() onlyOwner public {
          // Remove cases
         for (uint i = 0; i < currentId; i++) {
             delete casesById[i];
