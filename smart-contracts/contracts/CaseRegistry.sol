@@ -30,7 +30,7 @@ contract CaseRegistry {
         string experience
     );
 
-    event CaseRegistryRestarted();
+    event CaseRegistryRestarted(uint256 currentId);
 
     // // Errors
     // string private constant ERROR_NOT_OWNER = "USER_IS_NOT_OWNER";
@@ -84,8 +84,8 @@ contract CaseRegistry {
             delete casesById[i];
         }
 
-        currentId = 0;
+        emit CaseRegistryRestarted(currentId);
 
-        emit CaseRegistryRestarted();
+        currentId = 0;
     }
 }
