@@ -85,6 +85,7 @@ const Mutation = objectType({
               args.data.experience
             )
             receipt = await txResponse.wait()
+            console.log(receipt)
         } catch (e) {
             console.error(e)
         }

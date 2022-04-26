@@ -1,6 +1,20 @@
 version: "3.7"
 
 services:
+
+  db:
+    image: postgres:13.4
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+    networks:
+      main:
+        aliases:
+          - database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+
   cases_service:
     build: ./graphql-cases-service
     image: cases_service:latest
@@ -8,13 +22,18 @@ services:
       main:
         aliases:
           - cases
+
   users_service:
+    depends_on:
+      - db
     build: ./graphql-users-service
     image: users_service:latest
     networks:
       main:
         aliases:
           - users
+    environment:
+      DB_URL: "postgresql://admin:secret@database:5432/users"
 
   api_gateway:
     depends_on:
