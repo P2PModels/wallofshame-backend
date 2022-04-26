@@ -1,26 +1,9 @@
 {
-  "name": "web3-server",
-  "version": "1.0.0",
-  "description": "A server with web3.0 services IPFS, The Graph, GraphQL",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LuisHPorras/web3-server.git"
-  },
-  "keywords": [
-    "web3",
-    "ipfs",
-    "the-graph"
-  ],
-  "author": "Luis H. Porras",
   "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/LuisHPorras/web3-server/issues"
-  },
-  "homepage": "https://github.com/LuisHPorras/web3-server#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
     "hardhat": "^2.4.3"

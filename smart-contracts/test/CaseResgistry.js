@@ -116,9 +116,13 @@ describe("CaseRegistry contract", function () {
     //   expect(caseRegistryInstance.restart())
     //   .to.be.revertedWith('USER_IS_NOT_OWNER');
     // });
+    let currentId = 2
     it("Should emit event", async function () {
       expect(caseRegistryInstance.restart())
       .to.emit(caseRegistryInstance, "CaseResgistryRestarted")
+      .withArgs(
+        currentId
+      );
     });
   })
 });
