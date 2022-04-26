@@ -6,19 +6,22 @@ dataSources:
     name: CaseRegistry
     network: rinkeby
     source:
-      address: "0x7ED17a5387dc814fe00d035AD62FecB5094Ae09f"
+      address: "0x7a387dBDeE97E22B8c7B25E8fc0243F77CA03dC0"
       abi: CaseRegistry
-      startBlock: 10133546
+      startBlock: 10549513
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Case
+        - Stat
       abis:
         - name: CaseRegistry
           file: CaseRegistry/abis/CaseRegistry.json
       eventHandlers:
         - event: CaseReported(uint256,string,string,string,string,string,string,string,string)
           handler: handleCaseReported
+        - event: CaseRegistryRestarted(uint256)
+          handler: handleCaseRegistryRestarted
       file: CaseRegistry/CaseRegistry.wasm
