@@ -20,7 +20,7 @@ async function makeGatewaySchema() {
     `https://${process.env.CASES_SUBGRAPH_API_ENDPOINT}`
   );
   // const adminContext = { authHeader: "Commons my-app-to-app-token" };
-
+  
   return stitchSchemas({
     subschemas: [
       {
