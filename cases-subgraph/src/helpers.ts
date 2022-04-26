@@ -1,19 +1,14 @@
 import { Stat } from "../generated/schema";
+import { regions } from "./dictionary";
 
-export function regionToId(r: string): string {
-    // Switch statement not supported  with strings yet: https://github.com/AssemblyScript/assemblyscript/issues/1643
-    if(r == 'spain'){
-      return '0'
-    } else if(r == 'madrid'){
-      return '1'
-    } else if(r == 'barcelona'){
-      return '2'
-    } else if(r == 'sevilla'){
-      return '3'
-    } else {
-      return '-1'
+export function regionToId(region: string): string {
+    for(let i = 0; i< regions.length; i++){
+        if(regions[i] == region){
+            return i.toString()
+        }
     }
-  }
+    return "-1"
+}
 
 export function initStat(stat: Stat, region: string): Stat {
     stat.regionName = region

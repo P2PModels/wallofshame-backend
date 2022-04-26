@@ -31,7 +31,7 @@ services:
     environment:
       USERS_API_ENDPOINT: "users:4001"
       CASES_BACKEND_API_ENDPOINT: "cases:4002"
-      CASES_SUBGRAPH_API_ENDPOINT: "api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.30"
+      CASES_SUBGRAPH_API_ENDPOINT: "api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.32"
 
 networks:
   main:
