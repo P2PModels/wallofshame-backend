@@ -55,9 +55,12 @@ const Mutation = objectType({
       },
       resolve: async (_, args, context) => {
 
+        console.log("Reporting new case...")
+
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
-    
+
+
         // Provide wallet data and connect to provider
         const eoa: ExternallyOwnedAccount = { 
           address: process.env.ORGANIZATION_PUBLIC_ADDRESS || '',
@@ -84,7 +87,9 @@ const Mutation = objectType({
               args.data.ageRange,
               args.data.experience
             )
+            console.log(txResponse)
             receipt = await txResponse.wait()
+            console.log(receipt)
         } catch (e) {
             console.error(e)
         }

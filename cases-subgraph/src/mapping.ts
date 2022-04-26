@@ -64,8 +64,6 @@ export function handleCaseRegistryRestarted(event: CaseRegistryRestarted): void 
     store.remove('Case', i.toString())
   }
 
-  store.remove('Stat', "spain")
-
   for(i = 0; i < regions.length; i++ ){
     store.remove('Stat', regions[i])
   }

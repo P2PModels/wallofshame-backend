@@ -8,7 +8,7 @@ RUN npm run build
 
 EXPOSE 4002
 
-# CMD ["node", "./dist/server.js"]
-CMD ["/bin/sh", "./scripts/init_container.sh"]
+CMD ["node", "./dist/server.js"]
+# CMD ["/bin/sh", "./scripts/init_container.sh"]
 
 

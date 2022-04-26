@@ -16,7 +16,6 @@ type Case {
 
 type Mutation {
   report(data: ReportCaseCreateInput!): Case!
-  restart: Boolean!
 }
 
 type Query {
