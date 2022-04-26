@@ -13,10 +13,10 @@ async function makeGatewaySchema() {
   const usersRemoteExecutor = makeRemoteExecutor(
     `http://${process.env.USERS_API_ENDPOINT}/`
   );
-  const reportRemoteExecutor = makeRemoteExecutor(
+  const casesBackendRemoteExecutor = makeRemoteExecutor(
     `http://${process.env.CASES_BACKEND_API_ENDPOINT}/`
   );
-  const casesRemoteExecutor = makeRemoteExecutor(
+  const casesSubgraphRemoteExecutor = makeRemoteExecutor(
     `https://${process.env.CASES_SUBGRAPH_API_ENDPOINT}`
   );
   // const adminContext = { authHeader: "Commons my-app-to-app-token" };
@@ -29,14 +29,14 @@ async function makeGatewaySchema() {
         executor: usersRemoteExecutor,
       },
       {
-        // schema: await introspectSchema(reportRemoteExecutor, adminContext),
-        schema: await introspectSchema(reportRemoteExecutor),
-        executor: reportRemoteExecutor,
+        // schema: await introspectSchema(casesBackendRemoteExecutor, adminContext),
+        schema: await introspectSchema(casesBackendRemoteExecutor),
+        executor: casesBackendRemoteExecutor,
       },
       {
-        // schema: await introspectSchema(casesRemoteExecutor, adminContext),
-        schema: await introspectSchema(casesRemoteExecutor),
-        executor: casesRemoteExecutor,
+        // schema: await introspectSchema(casesSubgraphRemoteExecutor, adminContext),
+        schema: await introspectSchema(casesSubgraphRemoteExecutor),
+        executor: casesSubgraphRemoteExecutor,
       },
     ],
   });
@@ -44,11 +44,11 @@ async function makeGatewaySchema() {
 
 waitOn({
   resources: [
-    // `tcp:${process.env.USERS_API_ENDPOINT}`,
-    `tcp:4001`,
+    `tcp:${process.env.USERS_API_ENDPOINT}`,
+    // `tcp:4001`,
     
-    //`tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
-    `tcp:4002`,
+    `tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
+    // `tcp:4002`,
 
     // The subgraph endpoint returns a 404 when a GET request 
     // is done, therefore it can't be monitored with this library
@@ -56,6 +56,7 @@ waitOn({
   log: true,
 })
   .then(() => {
+    console.log("Creating schema...")
     makeGatewaySchema().then((schema) => {
       const server = new ApolloServer({
         schema: schema,
@@ -72,8 +73,16 @@ waitOn({
 
       server.listen(port).then(({ url }) => {
         console.log(`🚀 API Gateway ready at ${url}`);
-      });
-    });
+      })
+      .catch((e) => {
+        console.log("Error while trying to set the server to listen")
+      })
+
+    })
+    .catch((e) => {
+      console.log("Schema creation error")
+      console.log(e)
+    })
   })
   .catch((e) => {
     console.log("Wait on error");
