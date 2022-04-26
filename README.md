@@ -12,12 +12,20 @@ The back-end of this prototype uses the following technologies:
 ## Instalation and Setup
 
 
-In order to setup and run the front-end run the following commands:
+### Stand alone
+
+In order to setup and run the backend as stand alone run:
 
 ```
 $ npm install
 $ npm run dev
 ```
+
+### Docker
+
+Build and run docker container 
+
+`docker-compose -f docker-compose.yaml up --build -d`
 
 A new tab in your default browser should open automatically.
 
