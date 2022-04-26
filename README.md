@@ -23,7 +23,9 @@ $ npm run dev
 
 ### Docker
 
-1. Build and run docker container `docker-compose -f docker-compose.yaml up --build -d`
+Build and run docker container 
+
+`docker-compose -f docker-compose.yaml up --build -d`
 
 A new tab in your default browser should open automatically.
 
