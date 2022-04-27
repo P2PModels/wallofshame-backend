@@ -12,6 +12,9 @@ import CaseRegistryContract from './report-service/abis/CaseRegistry.json'
 
 require('dotenv').config();
 
+const GAS_PRICE = 25000000000
+const GAS_LIMIT = 2100000
+
 const Case = objectType({
   name: 'Case',
   definition(t) {
@@ -92,7 +95,11 @@ const Mutation = objectType({
               args.data.profession,
               args.data.gender,
               args.data.ageRange,
-              args.data.experience
+              args.data.experience,
+              {
+                gasPrice: GAS_PRICE,
+                gasLimit: GAS_LIMIT
+              }
             )
             console.log(txResponse)
             receipt = await txResponse.wait()
@@ -137,7 +144,10 @@ const Mutation = objectType({
 
         let receipt
         try {
-            const txResponse = await caseRegistryInstance.restart()
+            const txResponse = await caseRegistryInstance.restart({
+              gasPrice: GAS_PRICE,
+              gasLimit: GAS_LIMIT
+            })
             receipt = await txResponse.wait()
         } catch (e) {
             console.error(e)
