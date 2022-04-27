@@ -14,8 +14,13 @@ type Case {
   region: String
 }
 
+type Connection {
+  connected: Boolean
+}
+
 type Mutation {
   report(data: ReportCaseCreateInput!): Case!
+  restart: Connection!
 }
 
 type Query {

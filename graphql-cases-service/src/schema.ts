@@ -41,6 +41,13 @@ const ReportCaseCreateInput = inputObjectType({
   },
 })
 
+const Connection = objectType({
+  name: 'Connection',
+  definition(t) {
+    t.boolean('connected')
+  },
+})
+
 const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
@@ -106,10 +113,10 @@ const Mutation = objectType({
             experience:  args.data.experience 
         })
       },
-    }),
+    })
 
     t.nonNull.field('restart', {
-      type: 'Boolean',
+      type: 'Connection',
       resolve: async (_,args,context) => {
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
@@ -134,10 +141,10 @@ const Mutation = objectType({
             receipt = await txResponse.wait()
         } catch (e) {
             console.error(e)
-            return false
+            return { connected: false }
         }
 
-        return true
+        return { connected: true }
       }
     })
   },
@@ -147,6 +154,7 @@ export const schema = makeSchema({
   types: [
     Case,
     ReportCaseCreateInput,
+    Connection,
     Mutation,
   ],
   outputs: {
