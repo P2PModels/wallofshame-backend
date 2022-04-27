@@ -65,6 +65,6 @@ export function handleCaseRegistryRestarted(event: CaseRegistryRestarted): void 
   }
 
   for(i = 0; i < regions.length; i++ ){
-    store.remove('Stat', regions[i])
+    store.remove('Stat', regionToId(regions[i]))
   }
 }
