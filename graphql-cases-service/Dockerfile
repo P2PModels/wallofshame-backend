@@ -8,6 +8,8 @@ RUN npm run build
 
 EXPOSE $PORT
 
-CMD ["/bin/sh", "./scripts/init_container.sh"]
+CMD ["node", "./dist/server.js"]
+# CMD ["/bin/sh", "./scripts/init_container.sh"]
+
 
 

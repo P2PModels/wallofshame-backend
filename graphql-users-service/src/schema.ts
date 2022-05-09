@@ -86,6 +86,15 @@ const Mutation = objectType({
       },
     })
 
+    t.field('deleteUsers', {
+      type: 'Boolean',
+      resolve: async (_, args, context) => {
+        console.log("Clear users")
+        let deleted = await context.prisma.user.deleteMany({})
+        return !!deleted
+      },
+    })
+
   },
 })
 

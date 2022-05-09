@@ -12,6 +12,9 @@ import CaseRegistryContract from './report-service/abis/CaseRegistry.json'
 
 require('dotenv').config();
 
+const GAS_PRICE = 25000000000
+const GAS_LIMIT = 2100000
+
 const Case = objectType({
   name: 'Case',
   definition(t) {
@@ -41,6 +44,13 @@ const ReportCaseCreateInput = inputObjectType({
   },
 })
 
+const Connection = objectType({
+  name: 'Connection',
+  definition(t) {
+    t.boolean('connected')
+  },
+})
+
 const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
@@ -55,12 +65,15 @@ const Mutation = objectType({
       },
       resolve: async (_, args, context) => {
 
+        console.log("Reporting new case...")
+
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
-    
+
+
         // Provide wallet data and connect to provider
         const eoa: ExternallyOwnedAccount = { 
-          address: '0xb4124cEB3451635DAcedd11767f004d8a28c6eE7',
+          address: process.env.ORGANIZATION_PUBLIC_ADDRESS || '',
           privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
         }
         const signer = new ethers.Wallet(eoa, provider)
@@ -82,26 +95,18 @@ const Mutation = objectType({
               args.data.profession,
               args.data.gender,
               args.data.ageRange,
-              args.data.experience
+              args.data.experience,
+              {
+                gasPrice: GAS_PRICE,
+                gasLimit: GAS_LIMIT
+              }
             )
+            console.log(txResponse)
             receipt = await txResponse.wait()
+            console.log(receipt)
         } catch (e) {
             console.error(e)
         }
-
-        // let result = context.prisma.case.create({
-        //   data: {
-        //     companyName:  args.data.companyName,
-        //     caseType:  args.data.caseType,
-        //     description:  args.data.description,
-        //     region:  args.data.region,
-        //     profession:  args.data.profession,
-        //     gender:  args.data.gender,
-        //     ageRange:  args.data.ageRange,
-        //     experience:  args.data.experience
-        //   },
-        // })
-        // console.log(result)
 
         return ({
             id: "0",
@@ -116,6 +121,42 @@ const Mutation = objectType({
         })
       },
     })
+
+    t.nonNull.field('restart', {
+      type: 'Connection',
+      resolve: async (_,args,context) => {
+        // Provide Infura project url
+        const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
+    
+        // Provide wallet data and connect to provider
+        const eoa: ExternallyOwnedAccount = { 
+          address: process.env.ORGANIZATION_PUBLIC_ADDRESS || '',
+          privateKey: process.env.ORGANIZATION_PRIVATE_KEY || '' 
+        }
+        const signer = new ethers.Wallet(eoa, provider)
+
+        // Import contract info
+        const caseRegistryInstance = new ethers.Contract(
+            CaseRegistryContract.address,
+            CaseRegistryContract.abi,
+            signer
+        )
+
+        let receipt
+        try {
+            const txResponse = await caseRegistryInstance.restart({
+              gasPrice: GAS_PRICE,
+              gasLimit: GAS_LIMIT
+            })
+            receipt = await txResponse.wait()
+        } catch (e) {
+            console.error(e)
+            return { connected: false }
+        }
+
+        return { connected: true }
+      }
+    })
   },
 })
 
@@ -123,6 +164,7 @@ export const schema = makeSchema({
   types: [
     Case,
     ReportCaseCreateInput,
+    Connection,
     Mutation,
   ],
   outputs: {

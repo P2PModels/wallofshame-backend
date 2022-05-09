@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-// import "hardhat/console.sol";
-
 contract CaseRegistry {
     address public owner = msg.sender;
     uint256 currentId = 0;
@@ -29,6 +27,16 @@ contract CaseRegistry {
         string ageRange,
         string experience
     );
+
+    event CaseRegistryRestarted(uint256 currentId);
+
+    // // Errors
+    // string private constant ERROR_NOT_OWNER = "USER_IS_NOT_OWNER";
+
+    // modifier onlyOwner() {
+    //     require(msg.sender == owner, ERROR_NOT_OWNER);
+    //     _;
+    // }
 
     function report(
         string memory _companyName,
@@ -65,5 +73,17 @@ contract CaseRegistry {
         );
 
         currentId++;
+    }
+
+    function restart() public {
+    // function restart() onlyOwner public {
+         // Remove cases
+        for (uint i = 0; i < currentId; i++) {
+            delete casesById[i];
+        }
+
+        emit CaseRegistryRestarted(currentId);
+
+        currentId = 0;
     }
 }
