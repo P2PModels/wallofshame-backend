@@ -12,8 +12,23 @@ services:
         aliases:
           - database
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+
+  users_service:
+    depends_on:
+      - db
+    build: ./graphql-users-service
+    image: users_service:latest
+    volumes:
+      - ./graphql-users-service/init_flag:/app/init_flag
+    networks:
+      main:
+        aliases:
+          - users
+    environment:
+      DB_URL: "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@database:$POSTGRES_PORT/$POSTGRES_DB"
+      PORT: $USERS_SERVICE_PORT
 
   cases_service:
     build: ./graphql-cases-service
@@ -22,6 +37,8 @@ services:
       main:
         aliases:
           - cases
+    environment:
+      PORT: $CASES_BACKEND_SERVICE_PORT
 
   users_service:
     depends_on:
@@ -37,6 +54,7 @@ services:
 
   api_gateway:
     depends_on:
+      - users_service
       - cases_service
       - users_service
     build: ./graphql-gateway
@@ -48,9 +66,9 @@ services:
         aliases:
           - gateway
     environment:
-      USERS_API_ENDPOINT: "users:4001"
-      CASES_BACKEND_API_ENDPOINT: "cases:4002"
-      CASES_SUBGRAPH_API_ENDPOINT: "api.studio.thegraph.com/query/290/observatory-of-job-insecurity/v0.0.37"
+      USERS_API_ENDPOINT: "users:$USERS_SERVICE_PORT"
+      CASES_BACKEND_API_ENDPOINT: "cases:$CASES_BACKEND_SERVICE_PORT"
+      CASES_SUBGRAPH_API_ENDPOINT: "$CASES_SUBGRAPH_ENDPOINT"
 
 networks:
   main:

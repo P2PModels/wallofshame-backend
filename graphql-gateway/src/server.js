@@ -45,8 +45,7 @@ async function makeGatewaySchema() {
 waitOn({
   resources: [
     `tcp:${process.env.USERS_API_ENDPOINT}`,
-    // `tcp:4001`,
-    
+    // `tcp:4001`,  
     `tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
     // `tcp:4002`,
 

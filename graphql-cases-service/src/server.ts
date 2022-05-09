@@ -1,13 +1,14 @@
 import { ApolloServer } from 'apollo-server'
 import { schema } from './schema'
 import { context } from './context'
+require("dotenv").config();
 
 const server = new ApolloServer({
   schema: schema,
   context: context,
 })
 
-const port = 4002
+const port = process.env.PORT  
 
 server.listen(port).then(async ({ url }) => {
   console.log(`\
