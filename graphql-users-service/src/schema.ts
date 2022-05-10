@@ -73,7 +73,8 @@ const Mutation = objectType({
         ),
       },
       resolve: async (_parent, args, context) => {
-        console.log(args);
+        console.log("[add] Adding new user: ")
+        console.log("Email: " + args.data.email + ", region: " + args.data.region)
         return (context.prisma.user.create({
           data: {
             email: args.data.email,
@@ -89,8 +90,9 @@ const Mutation = objectType({
     t.field('deleteUsers', {
       type: 'Boolean',
       resolve: async (_, args, context) => {
-        console.log("Clear users")
+        console.log("[deleteUsers] Clearing all users...")
         let deleted = await context.prisma.user.deleteMany({})
+        console.log("[deleteUsers] Users removed: " + !!deleted)
         return !!deleted
       },
     })

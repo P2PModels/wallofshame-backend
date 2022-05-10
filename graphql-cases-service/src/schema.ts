@@ -65,8 +65,9 @@ const Mutation = objectType({
       },
       resolve: async (_, args, context) => {
 
-        console.log("Reporting new case...")
-
+        console.log("[report] Reporting new case:")
+        console.log("[report] Company name: " + args.data.companyName)
+      
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
 
@@ -101,9 +102,10 @@ const Mutation = objectType({
                 gasLimit: GAS_LIMIT
               }
             )
-            console.log(txResponse)
+            console.log("[report] Tx sent, waiting...")
             receipt = await txResponse.wait()
-            console.log(receipt)
+            console.log("[report] Tx hash:" + receipt.transactionHash)
+
         } catch (e) {
             console.error(e)
         }
@@ -125,6 +127,9 @@ const Mutation = objectType({
     t.nonNull.field('restart', {
       type: 'Connection',
       resolve: async (_,args,context) => {
+
+        console.log("[report] Restarting contract...")
+
         // Provide Infura project url
         const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_ENDPOINT)
     
@@ -146,9 +151,11 @@ const Mutation = objectType({
         try {
             const txResponse = await caseRegistryInstance.restart({
               gasPrice: GAS_PRICE,
-              gasLimit: GAS_LIMIT
+              // gasLimit: GAS_LIMIT
             })
+            console.log("[restart] Tx sent, waiting...")
             receipt = await txResponse.wait()
+            console.log("[restart] Tx hash:" + receipt.transactionHash)
         } catch (e) {
             console.error(e)
             return { connected: false }
