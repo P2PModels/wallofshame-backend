@@ -151,7 +151,7 @@ const Mutation = objectType({
         try {
             const txResponse = await caseRegistryInstance.restart({
               gasPrice: GAS_PRICE,
-              gasLimit: GAS_LIMIT
+              // gasLimit: GAS_LIMIT
             })
             console.log("[restart] Tx sent, waiting...")
             receipt = await txResponse.wait()
