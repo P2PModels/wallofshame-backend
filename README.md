@@ -7,29 +7,29 @@ The back-end of this prototype uses the following technologies:
 - The Graph for indexing smart contracts events and provide processed data trough GrapQL API. Visit [thegraph](./thegraph) folder.
 - Prisma with Postgres DB to provide access to the private backend trough a GraphQL API. Visit [graphql-server](./graphql-server) folder.
 
+## Screenshots
+
+<img src="./public/assets/map.png" width="49%" style="display: inline-block">
+<img src="./public/assets/dashboard.png" width="49%" style="display: inline-block">
+<img src="./public/assets/form.png" width="49%" >
+<img src="./public/assets/form2.png" width="49%" >
 
 
-## Instalation and Setup
+## Instalation and Setup (Ubuntu 20.04 LTS)
 
+In order to setup and run the front-end run the following commands:
 
-### Stand alone
-
-In order to setup and run the backend as stand alone run:
-
+``` bash
+$ git clone https://github.com/p2pmodels/wallofshame-backend
+$ cd wallofshame-backend
+$ git checkout prod
+$ docker-compose up
 ```
-$ npm install
-$ npm run dev
-```
-
-### Docker
-
-Build and run docker container 
-
-`docker-compose -f docker-compose.yaml up --build -d`
-
-A new tab in your default browser should open automatically.
 
 The front-end of this repo is in [Wall of Shame frontend](https://github.com/P2PModels/wallofshame-frontend)
 
+## Documentation
+
+Read the [docs](https://observatorio.docs.p2pmodels.eu) for more information
 
 
