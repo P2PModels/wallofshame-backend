@@ -9,10 +9,10 @@ The back-end of this prototype uses the following technologies:
 
 ## Screenshots
 
-<img src="./public/assets/map.png" width="49%" style="display: inline-block">
-<img src="./public/assets/dashboard.png" width="49%" style="display: inline-block">
-<img src="./public/assets/form.png" width="49%" >
-<img src="./public/assets/form2.png" width="49%" >
+<img src="./assets/map.png" width="49%" style="display: inline-block">
+<img src="./assets/dashboard.png" width="49%" style="display: inline-block">
+<img src="./assets/form.png" width="49%" >
+<img src="./assets/form2.png" width="49%" >
 
 
 ## Instalation and Setup (Ubuntu 20.04 LTS)
