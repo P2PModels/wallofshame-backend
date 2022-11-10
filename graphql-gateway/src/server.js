@@ -11,13 +11,13 @@ require("dotenv").config();
 
 async function makeGatewaySchema() {
   const usersRemoteExecutor = makeRemoteExecutor(
-    `http://${process.env.USERS_API_ENDPOINT}/`
+    `${process.env.USERS_API_ENDPOINT}/`
   );
   const casesBackendRemoteExecutor = makeRemoteExecutor(
-    `http://${process.env.CASES_BACKEND_API_ENDPOINT}/`
+    `${process.env.CASES_BACKEND_API_ENDPOINT}/`
   );
   const casesSubgraphRemoteExecutor = makeRemoteExecutor(
-    `https://${process.env.CASES_SUBGRAPH_API_ENDPOINT}`
+    `${process.env.CASES_SUBGRAPH_API_ENDPOINT}`
   );
   // const adminContext = { authHeader: "Commons my-app-to-app-token" };
   
@@ -44,11 +44,11 @@ async function makeGatewaySchema() {
 
 waitOn({
   resources: [
-    `tcp:${process.env.USERS_API_ENDPOINT}`,
-    // `tcp:4001`,
+    // `tcp:${process.env.USERS_API_ENDPOINT}`,
+    `tcp:4001`,
     
-    `tcp:${process.env.CASES_BACKEND_API_ENDPOINT}`,
-    // `tcp:4002`,
+    // `tcp:${process.env.CASES_API_ENDPOINT}`,
+    `tcp:4002`,
 
     // The subgraph endpoint returns a 404 when a GET request 
     // is done, therefore it can't be monitored with this library
