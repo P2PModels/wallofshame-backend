@@ -24,14 +24,14 @@ module.exports = {
   namedAccounts: {
     deployer: {
         default: 0, // here this will by default take the first account as deployer
-        4: process.env.PUBLIC_KEY, // Rinkeby
+        5: process.env.PUBLIC_KEY, // Goërli
     },
   },
   networks: {
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${process.env.PROJECT_ID}`,
+    goerli: {
+      url: `https://goerli.infura.io/v3/${process.env.PROJECT_ID}`,
       accounts: [process.env.PRIVATE_KEY]
-    }
+    },
   },
   paths: {
     deploy: 'deploy',
