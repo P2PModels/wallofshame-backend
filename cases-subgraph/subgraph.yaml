@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: CaseRegistry
-    network: rinkeby
+    network: goerli
     source:
-      address: "0x1E30236Eb8337B08CFe5330ed10992c7c8F13a04"
+      address: "0xD21b1047EFDc3e6243264010864234255897e42E"
       abi: CaseRegistry
-      startBlock: 10576039
+      startBlock: 7879327
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
